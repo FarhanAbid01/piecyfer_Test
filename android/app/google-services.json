@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "187880589384",
+    "project_id": "location-tracking-22889",
+    "storage_bucket": "location-tracking-22889.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:187880589384:android:c450ae0942c72c5e2bf07d",
+        "android_client_info": {
+          "package_name": "com.example.piecyfer_test"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDrWWp5uatzQo4sBXglZeyxtBfeNce5SEQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:187880589384:android:1dd02d280341a2e32bf07d",
+        "android_client_info": {
+          "package_name": "com.example.tracking_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDrWWp5uatzQo4sBXglZeyxtBfeNce5SEQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
