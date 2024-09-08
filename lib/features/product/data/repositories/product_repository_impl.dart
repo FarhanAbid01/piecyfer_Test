@@ -24,6 +24,7 @@ class ProductRepositoryImpl implements ProductRepository {
   });
 
   @override
+  @override
   Future<Either<Failure, PaginatedProducts>> fetchProducts(int limit, DocumentSnapshot? lastProduct) async {
     try {
       // Check internet connection before attempting to fetch remote data
@@ -52,13 +53,11 @@ class ProductRepositoryImpl implements ProductRepository {
         lastDocumentSnapshot:productModels.lastDocumentSnapshot,
       ));
 
-      // Cache the products locally
-      // localDataSource.cacheProducts(remoteProducts);
-
     } on ServerException catch (e){
-      return left(Failure(e.toString()));
+      return Left(Failure(e.message)); // Use the message from ServerException
     }
   }
+
 
   // @override
   // Future<Either<Failure, Product>> getProductById(String id) async {

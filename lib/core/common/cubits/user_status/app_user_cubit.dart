@@ -8,13 +8,13 @@ import 'package:internet_connection_checker_plus/internet_connection_checker_plu
 part 'app_user_state.dart';
 class UserStatusCubit extends Cubit<UserStatusState> {
   final ConnectionChecker _connectionChecker;
-  late final StreamSubscription subscription;
+  late final StreamSubscription?subscription;
 
   UserStatusCubit(this._connectionChecker) : super(UserStatusInitial()) {
-    _monitorConnection();
+    monitorConnection();
   }
 
-  void _monitorConnection() {
+  void monitorConnection() {
     // Cast ConnectionChecker to ConnectionCheckerImpl to use onStatusChange if necessary
     subscription = (_connectionChecker as ConnectionCheckerImpl).internetConnection.onStatusChange.listen((status) {
       if (status == InternetStatus.connected) {
@@ -28,7 +28,7 @@ class UserStatusCubit extends Cubit<UserStatusState> {
 
   @override
   Future<void> close() {
-    subscription.cancel();
+    subscription?.cancel();
     return super.close();
   }
 }

@@ -1,3 +1,4 @@
+import 'package:equatable/equatable.dart';
 import 'package:piecyfer_test/core/utils/exention.dart';
 import 'package:piecyfer_test/features/product/domain/entities/card_item_model.dart';
 import 'package:piecyfer_test/features/product/domain/entities/product.dart';
@@ -9,7 +10,6 @@ import 'package:fpdart/fpdart.dart';
 import '../../../../core/error/failures.dart';
 import '../../../../core/network/connection_checker.dart';
 import '../../domain/entities/pagination_model.dart';
-import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 
 part 'product_event.dart';
 part 'product_state.dart';
@@ -37,35 +37,37 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
   void _onFetchProducts(FetchProducts event, Emitter<ProductState> emit) async {
     emit(ProductLoading());
 
-
     final isConnected = await _connectionChecker.isConnected;
-
     final Either<Failure, PaginatedProducts> result = await _getAllProducts(
       Params(limit: event.limit, lastProduct: lastProductDocument),
     );
-    print('this is page number ${event.pageNumber}');
 
     result.fold(
           (failure) => emit(ProductFailure(failure.message)),
           (paginatedProducts) {
-       if(!isConnected){
-         lastProductDocument = null;
-         if(paginatedProducts.products.isEmpty){
-           emit(ProductFailure('Please Connect to the Internet'));
-          }else {
-           if(event.pageNumber!=1){
-             emit(ProductFailure('Please Connect to the Internet'));
-           }else{
-             emit(ProductLoaded(paginatedProducts.products, null));
-           }
-         }
-       }else{
-         lastProductDocument = paginatedProducts.lastDocumentSnapshot;
-         emit(ProductLoaded(paginatedProducts.products, lastProductDocument!));
-       }
+        if (!isConnected) {
+          lastProductDocument = null;
+          if (paginatedProducts.products.isEmpty) {
+            emit(ProductFailure('Please Connect to the Internet'));
+          } else {
+            if (event.pageNumber != 1) {
+              emit(ProductFailure('Please Connect to the Internet'));
+            } else {
+              emit(ProductLoaded(paginatedProducts.products, null));
+            }
+          }
+        } else {
+          lastProductDocument = paginatedProducts.lastDocumentSnapshot;
+          if (lastProductDocument != null) {
+            emit(ProductLoaded(paginatedProducts.products, lastProductDocument!));
+          } else {
+            emit(ProductLoaded(paginatedProducts.products, null)); // Handle null snapshot properly here
+          }
+        }
       },
     );
   }
+
 
   void _onAddProductToCart(AddProductToCart event, Emitter<ProductState> emit) {
     final existingCartItem = _cartItems.firstWhereOrNull(
